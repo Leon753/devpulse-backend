@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+requests
+authlib
+psycopg2-binary
+httpx
+sqlalchemy
+itsdangerous
+python-dotenv
