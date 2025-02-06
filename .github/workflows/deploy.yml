@@ -18,7 +18,7 @@ jobs:
         echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > private_key.pem
         chmod 600 private_key.pem
         ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@18.216.171.2 << 'EOF'
-          cd ~/backend  # Adjust based on your FastAPI project location
+          cd ~/DevPulse  # Adjust based on your FastAPI project location
           git pull origin main
           source venv/bin/activate
           nohup uvicorn main:app --host 0.0.0.0 --port 8000 --reload &
