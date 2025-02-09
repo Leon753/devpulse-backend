@@ -20,3 +20,4 @@ async def auth_callback(request: Request):
     request.session["token"] = token["access_token"]
 
     return {"message": "Authentication successful", "user": user.json()}
+
