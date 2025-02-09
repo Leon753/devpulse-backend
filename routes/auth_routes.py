@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
 from auth.oauth import oauth
 from starlette.responses import JSONResponse
+from starlette.responses import RedirectResponse
 import os
 
 router = APIRouter()
@@ -16,11 +17,15 @@ async def auth_callback(request: Request):
     token = await oauth.github.authorize_access_token(request)
     user = await oauth.github.get("https://api.github.com/user", token=token)
 
-    # Store user info & token in session (or a database)
-    request.session["user"] = user.json()
-    request.session["token"] = token["access_token"]
-
-    return {"message": "Authentication successful", "user": user.json()}
+    response = RedirectResponse(url="http://localhost:3000") 
+    response.set_cookie(
+        key="oauth_token",
+        value=token["access_token"],
+        httponly=True, 
+        secure=False,   # Use False for local development (change to True after deploying)
+        samesite="Lax" 
+    )
+    return response
 
 @router.get("/user")
 async def get_user(request: Request):
