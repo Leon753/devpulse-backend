@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request
 from auth.oauth import oauth
+from starlette.responses import JSONResponse
 import os
 
 router = APIRouter()
@@ -21,3 +22,12 @@ async def auth_callback(request: Request):
 
     return {"message": "Authentication successful", "user": user.json()}
 
+@router.get("/user")
+async def get_user(request: Request):
+    token = request.cookies.get("oauth_token")
+
+    if not token:
+        return JSONResponse({"error": "Not logged in"}, status_code=401)
+
+    res = await oauth.github.get("https://api.github.com/user", token=token)
+    return res.json()
