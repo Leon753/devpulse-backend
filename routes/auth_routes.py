@@ -43,7 +43,6 @@ async def get_user(request: Request):
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get("https://api.github.com/user", headers=headers)
 
-    if response.status_code != 200:
-        raise HTTPException(status_code=401, detail="Invalid token")
+    if response.status_code != 200: raise HTTPException(status_code=401, detail="Invalid token")
 
     return {"user": response.json()}
