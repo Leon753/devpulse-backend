@@ -6,6 +6,11 @@ from starlette.middleware.sessions import SessionMiddleware
 from services.github_service import fetch_github_activity
 import os
 
+origins = [
+    "http://localhost:3000", 
+    "https://devpulse.duckdns.org",  
+]
+
 app = FastAPI(title="DevPulse API", description="GitHub Activity Tracker", version="1.0.0")
 
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "supersecretkey"))
