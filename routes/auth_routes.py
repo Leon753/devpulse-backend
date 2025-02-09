@@ -8,7 +8,7 @@ EC2_IP = os.getenv("EC2_IP")
 
 @router.get("/login")
 async def login(request: Request):
-    return await oauth.github.authorize_redirect(request, f"http://{EC2_IP}:8000/auth/callback")
+    return await oauth.github.authorize_redirect(request, f"http://{EC2_IP}/auth/callback")
 
 @router.get("/callback")
 async def auth_callback(request: Request):
