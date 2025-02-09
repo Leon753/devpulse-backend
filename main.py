@@ -11,7 +11,16 @@ origins = [
     "https://devpulse.duckdns.org",  
 ]
 
+
 app = FastAPI(title="DevPulse API", description="GitHub Activity Tracker", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "supersecretkey"))
 app.include_router(auth_routes.router, prefix="/auth", tags=["Authentication"])
