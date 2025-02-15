@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, Request
 from auth.dependencies import get_current_user  # Ensure user is authenticated
+from auth.oauth import oauth
 import httpx
 
 router = APIRouter()
 
 @router.get("/repos")
 async def get_repos(request: Request, user: dict = Depends(get_current_user)):
-    token = request.session.get("token")
+    token = request.cookies.get("oauth_token")
     if not token:
         return {"error": "Unauthorized"}
 
@@ -19,8 +20,8 @@ async def get_repos(request: Request, user: dict = Depends(get_current_user)):
 
 @router.get("/activity")
 async def get_github_activity(request: Request):
-    token = request.session.get("token")
-    user = request.session.get("user")
+    token = request.cookies.get("oauth_token")
+    user = await oauth.github.get("https://api.github.com/user", token=token)
 
     if not token or not user:
         return {"error": "Unauthorized"}
