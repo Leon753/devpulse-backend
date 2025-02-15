@@ -24,7 +24,7 @@ async def auth_callback(request: Request):
         value=token["access_token"],
         httponly=True, 
         secure=True,   # Use False for local development (change to True after deploying)
-        samesite="Lax",
+        samesite="None",
         max_age=3600
     )
     print("Set-Cookie Header:", response.headers.get("Set-Cookie"))
